@@ -7,9 +7,9 @@ from preprocess import (
     RemoveDiacriticsPreprocessor,
     StemmingPreprocessor,
     LemmatizationPreprocessor,
-    STEMMER_EXECUTABLE_PATH,
-    UDPIDE_MODEL_PATH,
 )
+
+import config
 
 
 class PipelineBuilder:
@@ -35,12 +35,12 @@ class PipelineBuilder:
         self.preprocessors.append(RemoveDiacriticsPreprocessor())
         return self
     
-    def add_stemming(self, stemmer_path: str = STEMMER_EXECUTABLE_PATH) -> 'PipelineBuilder':
+    def add_stemming(self, stemmer_path: str = config.STEMMER_EXECUTABLE_PATH) -> 'PipelineBuilder':
         self.preprocessors.append(StemmingPreprocessor(stemmer_path))
         return self
     
-    def add_lemmatization(self, model_path: str = UDPIDE_MODEL_PATH) -> 'PipelineBuilder':
-        self.preprocessors.append(LemmatizationPreprocessor(UDPIDE_MODEL_PATH))
+    def add_lemmatization(self, model_path: str = config.UDPIDE_MODEL_PATH) -> 'PipelineBuilder':
+        self.preprocessors.append(LemmatizationPreprocessor(model_path))
         return self
     
     def add_custom(self, preprocessor: TokenPreprocessor) -> 'PipelineBuilder':
@@ -51,7 +51,7 @@ class PipelineBuilder:
         return PreprocessingPipeline(self.preprocessors)
 
     @staticmethod
-    def create_stemming_pipeline(stemmer_path: str = STEMMER_EXECUTABLE_PATH) -> PreprocessingPipeline:
+    def create_stemming_pipeline(stemmer_path: str = config.STEMMER_EXECUTABLE_PATH) -> PreprocessingPipeline:
         """
         Creates a preprocessing pipeline that removes stopwords, meaningless words,
         lowercase the text, removes diacritics, and applies
@@ -72,7 +72,7 @@ class PipelineBuilder:
             .build()
 
     @staticmethod
-    def create_lemmatization_pipeline(model_path: str = UDPIDE_MODEL_PATH) -> PreprocessingPipeline:
+    def create_lemmatization_pipeline(model_path: str = config.UDPIDE_MODEL_PATH) -> PreprocessingPipeline:
         """
         Creates a preprocessing pipeline that removes stopwords, meaningless words,
         lowercase the text, removes diacritics, and applies

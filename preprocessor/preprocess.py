@@ -4,10 +4,7 @@ from unicodedata import category, normalize
 from tokenizer import Token 
 from subprocess import run
 from ufal.udpipe import Model, Sentence
-
-STOPWORDS_PATH = './stopwords/stopwords_czech.txt'
-UDPIDE_MODEL_PATH = './udpipe/czech-pdt-ud-2.5-191206.udpipe'
-STEMMER_EXECUTABLE_PATH = './stemmer/stemmer'
+import config
 
 
 class TokenPreprocessor(ABC):
@@ -44,7 +41,7 @@ class RemoveDiacriticsPreprocessor(TokenPreprocessor):
 class RemoveStopwordsPreprocessor(TokenPreprocessor):
     def __init__(self):
         self.stopwords = set()
-        with open(STOPWORDS_PATH, 'r', encoding='utf-8') as f:
+        with open(config.STOPWORDS_PATH, 'r', encoding='utf-8') as f:
             self.stopwords = set(f.read().splitlines())
 
     def preprocess(self, token: Token, document: str) -> Token:
@@ -69,7 +66,7 @@ class RemoveMeaninglessPreprocessor(TokenPreprocessor):
 
 
 class StemmingPreprocessor(TokenPreprocessor):
-    def __init__(self, stemmer_executable_path: str = STEMMER_EXECUTABLE_PATH):
+    def __init__(self, stemmer_executable_path: str = config.STEMMER_EXECUTABLE_PATH):
         self.stemmer_executable_path = stemmer_executable_path
 
     def preprocess(self, token: Token, document: str) -> Token:
@@ -92,7 +89,7 @@ class StemmingPreprocessor(TokenPreprocessor):
 
 
 class LemmatizationPreprocessor(TokenPreprocessor):
-    def __init__(self, model_path: str = UDPIDE_MODEL_PATH):
+    def __init__(self, model_path: str = config.UDPIDE_MODEL_PATH):
         self.model = Model.load(model_path)
         if not self.model:
             raise Exception(f"Model {model_path} not found")
