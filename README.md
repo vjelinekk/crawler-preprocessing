@@ -65,9 +65,26 @@ vocab = build_vocabulary(documents)
 
 ### Executing the code
 
-- You can execute your code with:
+- Run this to see the help:
 ```bash
-python main.py
+python main.py -h
+```
+- You can run the code with 3 prebuild pipelines:
+    - Stemming pipeline:
+    ```bash
+    python main.py stemming
+    ```
+    - Lemmatization pipline:
+    ```bash
+    python main.py lematization
+    ```
+    - Simple pipeline:
+    ```bash
+    python main.py simple
+    ```
+- You can also build you own custom pipeline from the CLI with the command:
+```bash
+python main.py custom
 ```
 
 ## Project Structure
